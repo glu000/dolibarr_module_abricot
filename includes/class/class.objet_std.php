@@ -140,7 +140,7 @@ class TObjetStd {
   function _get_field_list(){
 		$r="";
 		foreach ($this->TChamps as $nom_champ=>$info) {
-			$r.='`'.$nom_champ."`,";
+			$r.='"'.$nom_champ.'",';
 		}
    	 	return $r;
   }

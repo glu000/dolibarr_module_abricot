@@ -105,16 +105,21 @@ foreach ($tables as $tableName => $cols){
 	$tableName = MAIN_DB_PREFIX.$tableName;
 	$sqlShowTable = "SHOW TABLES LIKE '".$db->escape($tableName)."' ";
 	$resST = $db->query($sqlShowTable);
-	if($resST && $db->num_rows($resST) > 0) {
-		foreach ($cols as $col){
-			$sql = "UPDATE `".$db->escape($tableName)."` SET `".$db->escape($col)."` = REPLACE(`".$db->escape($col)."`,'".$db->escape($param->oldUrl)."' ,'".$db->escape($param->newUrl)."');";
-			$resCol = $db->query($sql);
-			if(!$sql){
-				print $tableName. " :  ".$col." UPDATE ERROR ".$db->error()." \n";
-			}else{
-				$num = $db->affected_rows($resCol);
-				print $tableName. " :  ".$col." => ".$num." \n";
+	if($resST) {
+		if($db->num_rows($resST) > 0) {
+			foreach ($cols as $col) {
+				$sql = 'UPDATE "' . $db->escape($tableName) . '" SET "' . $db->escape($col) . '" = REPLACE("' . $db->escape($col) . '","' . $db->escape($param->oldUrl) . '" ,"' . $db->escape($param->newUrl) . '");';
+				$resCol = $db->query($sql);
+				if (!$sql) {
+					print $tableName . " :  " . $col . " UPDATE ERROR " . $db->error() . " \n";
+				} else {
+					$num = $db->affected_rows($resCol);
+					print $tableName . " :  " . $col . " => " . $num . " \n";
+				}
 			}
+		}
+		else{
+			print "N/A : " .$sqlShowTable. " Not found : skip \n";
 		}
 	}
 	else{

@@ -21,7 +21,7 @@
 
 		while ($object = $db->fetch_object($resql))
 		{
-			$sql = "INSERT IGNORE INTO ".MAIN_DB_PREFIX."const (`name`, `entity`, `value`, `type`, `visible`, `note`, `tms`)";
+			$sql = 'INSERT IGNORE INTO '.MAIN_DB_PREFIX.'const ("name", "entity", "value", "type", "visible", "note", "tms")';
 			$sql.= " VALUES ('";
 			$sql.= str_replace("TICKETS_", "TICKET_", $object->name)."','";
 			$sql.= $object->entity."','";
@@ -136,7 +136,7 @@
 
         //pour chaque extrafield, on rajoute la colonne dans la table de ticket standard
         foreach ($TColumnsExtrafields as $column){
-            $sql = "ALTER TABLE ".MAIN_DB_PREFIX."ticket_extrafields ADD `".$column['name']."` ".$column['type'];
+            $sql = 'ALTER TABLE '.MAIN_DB_PREFIX.'ticket_extrafields ADD "'.$column['name'].'" '.$column['type'];
             $db->query($sql);
         }
     }
@@ -220,14 +220,14 @@
 
 					$obj['elementtype'] = 'ticket';
 
-					$sql = "INSERT INTO ".MAIN_DB_PREFIX."extrafields (";
-					$sql.= '`'.implode('`,`', $fields).'`';
-					$sql.= ") values (";
+					$sql = 'INSERT INTO '.MAIN_DB_PREFIX.'extrafields (';
+					$sql.= '"'.implode('","', $fields).'"';
+					$sql.= ') values (';
 					foreach ($fields as $k => $fieldkey) {
-						if ($k != 0) $sql.= ",";
+						if ($k != 0) $sql.= ',';
 						$sql.= "'".$obj[$fieldkey]."'";
 					}
-					$sql.= ")";
+					$sql.= ')';
 
 					$db->query($sql);
 				}
