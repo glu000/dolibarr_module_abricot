@@ -1078,6 +1078,33 @@ class SeedObject extends SeedObjectDolibarr
 		return 1;
 	}
 
+
+	/**
+	 * Function to update current object
+	 *
+	 * @param   array   $Tab    Array of values
+	 * @return                  int
+	 */
+	public function validateAll()
+	{
+		global $conf;
+		$error = 0;
+		foreach ($this->fields as $key => $value)
+		{
+			// Validation of fields values
+			if ($conf->global->MAIN_FEATURE_LEVEL >= 2 || !empty($conf->global->MAIN_ACTIVATE_VALIDATION_RESULT)) {
+				if (!$error && !empty($value['validate']) && is_callable(array($this, 'validateField'))) {
+					if (!$this->validateField($this->fields, $key, $this->{$key})) {
+						$error++;
+					}
+				}
+			}
+		}
+
+		if($error){ return false; }
+		return true;
+	}
+
 	/**
 	 * Create object into database
 	 *
